@@ -1,8 +1,9 @@
 {
   "name": "solo-travel-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "dev": "node --watch app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,13 @@
     "url": "https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server/issues"
   },
   "homepage": "https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.3"
+  }
 }
