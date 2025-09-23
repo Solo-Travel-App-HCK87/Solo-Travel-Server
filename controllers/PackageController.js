@@ -9,7 +9,7 @@ class PackageController {
             const {id} = req.params;
             const isPackageExist = await TravelPackage.findByPk(+id);
             if (!isPackageExist) return next({name : 'NotFound', message : 'Package not found'});
-            return res.status(200).json({isPackageExist});
+            res.status(200).json(isPackageExist);
 
         } catch (error) {
             
@@ -19,12 +19,12 @@ class PackageController {
 
     }
 
-    static async getPackageList (req,res,next) {
+    static async getPackageList (_req,res,next) {
 
         try {
             
             const listPackage = await TravelPackage.findAll();
-            
+            res.status(200).json(listPackage);
 
         } catch (error) {
             
