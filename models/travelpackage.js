@@ -24,13 +24,13 @@ module.exports = (sequelize, DataTypes) => {
     departure_date: DataTypes.DATE,
     description: DataTypes.TEXT,
     image_url: DataTypes.STRING,
-    categories: DataTypes.STRING,
-    inclusions: DataTypes.STRING,
-    itinerary: DataTypes.TEXT,
-    preparation_docs: DataTypes.STRING,
-    preparation_clothing: DataTypes.STRING,
-    preparation_essentials: DataTypes.STRING,
-    preparation_electronics: DataTypes.STRING
+    categories: DataTypes.JSON,
+    inclusions: DataTypes.JSON,
+    itinerary: DataTypes.JSON,
+    preparation_docs: DataTypes.JSON,
+    preparation_clothing: DataTypes.JSON,
+    preparation_essentials: DataTypes.JSON,
+    preparation_electronics: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'TravelPackage',

@@ -40,25 +40,25 @@ module.exports = {
         type: Sequelize.STRING
       },
       categories: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       inclusions: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       itinerary: {
-        type: Sequelize.TEXT
+        type: Sequelize.JSON
       },
       preparation_docs: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       preparation_clothing: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       preparation_essentials: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       preparation_electronics: {
-        type: Sequelize.STRING
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,
