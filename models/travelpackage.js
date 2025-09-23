@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      TravelPackage.hasMany(models.Transaction, {foreignKey : 'TravelPackageId'})
     }
   }
   TravelPackage.init({
