@@ -1,0 +1,20 @@
+{
+  "name": "solo-travel-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server/issues"
+  },
+  "homepage": "https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server#readme",
+  "description": ""
+}
