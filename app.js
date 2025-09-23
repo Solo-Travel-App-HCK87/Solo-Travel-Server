@@ -6,6 +6,7 @@ const cors = require('cors')
 const multer = require('multer')
 const express = require('express')
 const UserController = require('./controllers/UserController');
+const PackageController = require('./controllers/PackageController');
 const { errorHandling } = require('./middlewares/errorHandling');
 const app = express()
 const port = 3000
@@ -25,4 +26,8 @@ app.use(errorHandling)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-})
+});
+
+
+app.get('/packages', PackageController.getPackageList)
+app.get('/packages/:id', PackageController.getPackageById)
