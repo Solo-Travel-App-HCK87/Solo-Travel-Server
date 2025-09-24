@@ -67,7 +67,8 @@ io.on('connection', async (socket) => {
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
 app.use(authentication);
-app.get('/profile', authentication, UserController.getProfile);
+app.get('/my-packages', PackageController.getMyPackages)
+app.get('/profile', UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
 app.post('/buys/:packagesId', TransactionController.createTransaction);

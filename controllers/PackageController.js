@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { TravelPackage } = require('../models');
+const { TravelPackage, Transaction } = require('../models');
 const { GoogleGenAI } = require('@google/genai');
 class PackageController {
 
@@ -92,6 +92,27 @@ Respond with ONLY the JSON object. No additional text.`;
 
             next(error)
             console.log(error, '<<< error get package list server');
+
+        }
+
+    }
+
+
+    static async getMyPackages(req,res,next) {
+
+        try {
+            
+           const myPackages = await Transaction.findAll({where : {
+            UserId: req.user.id
+           }, include : {
+            model : TravelPackage
+           }});
+
+           res.status(200).json(myPackages)
+
+        } catch (error) {
+            
+            next(error)
 
         }
 
