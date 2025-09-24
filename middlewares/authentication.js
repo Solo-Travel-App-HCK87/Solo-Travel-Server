@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { verifyToken } = require('../helpers/jwt')
+const { verifyToken } = require('../helpers/jwt');
 
 const authentication = async (req,_res,next) => {
 
@@ -11,7 +11,7 @@ const authentication = async (req,_res,next) => {
         const isTokenValid = verifyToken(token);
         const isUserExists = await User.findByPk(+isTokenValid.id);
         if (!isUserExists) return next({name : 'Unauthorized', message : 'Invalid email/password'});
-        req.user = isTokenValid
+        req.user = isUserExists
         next()
 
     } catch (error) {
@@ -23,7 +23,4 @@ const authentication = async (req,_res,next) => {
 
 }
 
-
-module.exports = { authentication }
-
-
+module.exports = { authentication };
