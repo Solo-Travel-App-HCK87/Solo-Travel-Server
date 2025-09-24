@@ -21,7 +21,6 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { verifyToken } = require('./helpers/jwt');
 const { TransactionController } = require('./controllers/TransactionController');
-const { use } = require('react');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: '*',
