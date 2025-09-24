@@ -2,7 +2,7 @@ console.log({ env: process.env.NODE_ENV });
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-const { User } = require('./models');
+const { User, RoomMessage } = require('./models');
 const cors = require('cors');
 const multer = require('multer');
 const express = require('express');
@@ -29,26 +29,37 @@ const io = new Server(httpServer, {
 
 io.on('connection', async (socket) => {
   const access_token = socket.handshake.auth.access_token;
-  console.log(access_token);
   if (!access_token) {
     console.log('No access token provided');
     return;
   }
   const payload = verifyToken(access_token);
   const user = await User.findByPk(payload.id);
+  const roomId = socket.handshake.auth.roomId;
+  const prev = await RoomMessage.findAll({
+    where: { RoomId: roomId },
+    include: { model: User },
+    order: [['createdAt', 'ASC']],
+  });
 
-  socket.on('chat_message', (msg) => {
+  io.emit(`travel:${roomId}`, prev);
+
+  socket.on('chat_message', async (msg) => {
     console.log(msg);
 
-    const messageData = {
+    await RoomMessage.create({
+      SenderId: user.id,
+      RoomId: roomId,
       message: msg.message,
-      sender: user,
-      access_token: access_token,
-      createdAt: new Date(),
-    };
-    console.log(messageData);
+    });
 
-    io.emit('message_info', messageData);
+    const data = await RoomMessage.findAll({
+      where: { RoomId: roomId },
+      include: { model: User },
+      order: [['createdAt', 'ASC']],
+    });
+
+    io.emit(`travel:${roomId}`, data);
   });
 });
 
