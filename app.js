@@ -11,7 +11,7 @@ const PackageController = require('./controllers/PackageController');
 const { errorHandling } = require('./middlewares/errorHandling');
 const { authentication } = require('./middlewares/authentication');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.use(cors());
