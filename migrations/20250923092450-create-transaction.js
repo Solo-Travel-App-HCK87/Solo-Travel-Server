@@ -23,15 +23,6 @@ module.exports = {
           key : 'id'
         }
       },
-      quantity: {
-        type: Sequelize.INTEGER
-      },
-      total_price: {
-        type: Sequelize.INTEGER
-      },
-      booking_date: {
-        type: Sequelize.DATE
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

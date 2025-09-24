@@ -24,6 +24,7 @@ app.post('/login', UserController.login);
 app.get('/profile', authentication, UserController.getProfile);
 app.get('/packages', PackageController.getPackageList)
 app.get('/packages/:id', PackageController.getPackageById)
+app.post('/buys/:packagesId', PackageController.getPackageById)
 app.patch(
   '/profile/image',
   authentication,
