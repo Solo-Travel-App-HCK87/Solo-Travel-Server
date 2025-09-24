@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       User.hasMany(models.Transaction, {foreignKey : 'UserId'})
+      User.hasMany(models.RoomMessage, {foreignKey : 'SenderId'})
     }
   }
   User.init({
