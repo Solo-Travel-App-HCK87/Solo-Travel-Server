@@ -1,7 +1,8 @@
+const { Op } = require('sequelize');
 const { TravelPackage } = require('../models');
 const { GoogleGenAI } = require('@google/genai');
 class PackageController {
-    
+
     static async getPackageById(req, res, next) {
         try {
             const { id } = req.params;
@@ -9,7 +10,7 @@ class PackageController {
             if (!isPackageExist) return next({ name: 'NotFound', message: 'Package not found' });
             if (!isPackageExist.prepartion_docs) {
                 const ai = new GoogleGenAI({})
-            const prompt = `You are a travel expert AI. Generate preparation recommendations for travelers based on the travel package data provided.
+                const prompt = `You are a travel expert AI. Generate preparation recommendations for travelers based on the travel package data provided.
 **Travel Package Data**:
 \`\`\`json
 ${JSON.stringify(isPackageExist, null, 2)}
@@ -35,23 +36,23 @@ ${JSON.stringify(isPackageExist, null, 2)}
 
 Respond with ONLY the JSON object. No additional text.`;
 
-            const response = await ai.models.generateContent({
-                model: "gemini-2.5-flash",
-                contents: [{
-                    role : 'user',
-                    parts : [{
-                        text : prompt
-                    }]
-                }],
-            });
+                const response = await ai.models.generateContent({
+                    model: "gemini-2.5-flash",
+                    contents: [{
+                        role: 'user',
+                        parts: [{
+                            text: prompt
+                        }]
+                    }],
+                });
 
-             const splitting = JSON.parse(response.text.split('```')[1].split('json')[1]);
-             const preparation_docs = splitting.preparation_docs;
-             const preparation_clothing = splitting.preparation_clothing;
-             const preparation_essentials = splitting.preparation_essentials;
-             const preparation_electronics = splitting.preparation_electronics;
-             await isPackageExist.update({preparation_docs, preparation_clothing, preparation_essentials, preparation_electronics});
-             await isPackageExist.reload()
+                const splitting = JSON.parse(response.text.split('```')[1].split('json')[1]);
+                const preparation_docs = splitting.preparation_docs;
+                const preparation_clothing = splitting.preparation_clothing;
+                const preparation_essentials = splitting.preparation_essentials;
+                const preparation_electronics = splitting.preparation_electronics;
+                await isPackageExist.update({ preparation_docs, preparation_clothing, preparation_essentials, preparation_electronics });
+                await isPackageExist.reload()
             }
 
             res.status(200).json(isPackageExist);
@@ -64,16 +65,33 @@ Respond with ONLY the JSON object. No additional text.`;
 
     }
 
-    static async getPackageList(_req, res, next) {
+    static async getPackageList(req, res, next) {
 
         try {
+            const { search, sort } = req.query
+            let options = {};
 
-            const listPackage = await TravelPackage.findAll();
+            if (search) {
+                options.where = {
+                    [Op.or]: [
+                        { destination_name: { [Op.iLike]: `%${search}%` } },
+                        { location: { [Op.iLike]: `%${search}%` } }
+                    ]
+                }
+            }
+
+            if (sort) {
+                // const ordering = sort[0] === '-' ? 'DESC' : 'ASC'
+                options.order = [['current_price', sort]];
+            }
+
+            const listPackage = await TravelPackage.findAll(options);
             res.status(200).json(listPackage);
 
         } catch (error) {
 
             next(error)
+            console.log(error, '<<< error get package list server');
 
         }
 
