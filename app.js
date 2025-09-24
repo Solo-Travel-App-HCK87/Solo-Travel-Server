@@ -2,7 +2,7 @@ console.log({ env: process.env.NODE_ENV });
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
-const { User, RoomMessage } = require('./models');
+const { User, RoomMessage, TravelPackage, Transaction } = require('./models');
 const cors = require('cors');
 const multer = require('multer');
 const express = require('express');
@@ -48,6 +48,7 @@ io.on('connection', async (socket) => {
   const user = await User.findByPk(payload.id);
   const roomId = socket.handshake.auth.roomId;
   socket.handshake.auth.userId = user.id;
+
   const prev = await RoomMessage.findAll({
     where: { RoomId: roomId },
     include: { model: User },
@@ -55,9 +56,20 @@ io.on('connection', async (socket) => {
   });
 
   io.emit(`travel:${roomId}`, prev);
+  const isPackageExist = await TravelPackage.findByPk(roomId, {
+    include: {
+      model: Transaction,
+      include: {
+        model: User,
+      },
+    },
+  });
+
+  io.emit(`package:${roomId}`, isPackageExist);
 
   updateOnlineUsers(roomId);
 
+  console.log(isPackageExist, '<<< is package exist');
   socket.on('chat_message', async (msg) => {
     console.log(msg);
 
