@@ -84,7 +84,7 @@ class UserController {
 
   static async patchImageUser(req, res, next) {
     try {
-
+      console.log(req.file, '<<< req.file patch user by id server');
       if (!req.file) {
         next({ name: 'isImage' });
         return;
@@ -103,7 +103,7 @@ class UserController {
       }
 
       await user.update({ ImageUrl: result.secure_url });
-      res.status(200).json({ message: 'User image updated successfully' });
+      res.status(200).json({ message: 'User image updated successfully', ImageUrl: result.secure_url });
     } catch (error) {
       next(error);
       console.log(error, '<<< error patch user by id server');
