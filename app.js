@@ -21,11 +21,10 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { verifyToken } = require('./helpers/jwt');
 const { TransactionController } = require('./controllers/TransactionController');
+const { use } = require('react');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: {
-    origin: ['http://localhost:5173'],
-  },
+  cors: '*',
 });
 
 async function updateOnlineUsers(roomId) {
@@ -49,6 +48,7 @@ io.on('connection', async (socket) => {
   const payload = verifyToken(access_token);
   const user = await User.findByPk(payload.id);
   const roomId = socket.handshake.auth.roomId;
+  socket.handshake.auth.userId = user.id;
   const prev = await RoomMessage.findAll({
     where: { RoomId: roomId },
     include: { model: User },
@@ -83,7 +83,7 @@ io.on('connection', async (socket) => {
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
 app.use(authentication);
-app.get('/my-packages', PackageController.getMyPackages)
+app.get('/my-packages', PackageController.getMyPackages);
 app.get('/profile', UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
