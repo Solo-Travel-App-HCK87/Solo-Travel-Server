@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Solo-Travel-App-HCK87/Solo-Travel-Server#readme",
   "description": "",
   "dependencies": {
+    "@google/genai": "^1.20.0",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
@@ -27,7 +28,8 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "pg": "^8.16.3",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
     "dotenv": "^17.2.2",
