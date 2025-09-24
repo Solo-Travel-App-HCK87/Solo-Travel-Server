@@ -11,7 +11,7 @@ const PackageController = require('./controllers/PackageController');
 const { errorHandling } = require('./middlewares/errorHandling');
 const { authentication } = require('./middlewares/authentication');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.use(cors());
@@ -21,7 +21,6 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { verifyToken } = require('./helpers/jwt');
 const { TransactionController } = require('./controllers/TransactionController');
-const { use } = require('react');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: '*',
@@ -90,15 +89,11 @@ app.get('/packages/:id', PackageController.getPackageById);
 app.post('/buys/:packagesId', TransactionController.createTransaction);
 app.patch(
   '/profile/image',
-  authentication,
   upload.single('ImageUrl'),
   UserController.patchImageUser
 );
 
 app.use(errorHandling);
-
-app.get('/packages', PackageController.getPackageList);
-app.get('/packages/:id', PackageController.getPackageById);
 
 httpServer.listen(port, () => {
   console.log(`Server running at: http://localhost:${port}`);
