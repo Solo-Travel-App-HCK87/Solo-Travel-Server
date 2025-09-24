@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       TravelPackage.hasMany(models.Transaction, {foreignKey : 'TravelPackageId'})
+      TravelPackage.hasOne(models.RoomMessage, {foreignKey : 'RoomId'})
     }
   }
   TravelPackage.init({
@@ -30,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     preparation_docs: DataTypes.JSON,
     preparation_clothing: DataTypes.JSON,
     preparation_essentials: DataTypes.JSON,
-    preparation_electronics: DataTypes.JSON
+    preparation_electronics: DataTypes.JSON,
+    highlights: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'TravelPackage',

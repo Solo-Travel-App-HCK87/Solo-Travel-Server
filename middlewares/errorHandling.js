@@ -1,5 +1,5 @@
 const errorHandling = (err, _req, res, _next ) => {
-
+    console.log(err)
     if (err.name === 'JsonWebTokenError') return res.status(401).json({message : 'Invalid token error'});
     if (err.name === 'SequelizeValidationError') return res.status(400).json({message : err.errors.map(e => e.message)});
     if (err.name === 'SequelizeConstraintError') return res.status(400).json({message : err.errors.map(e => e.message)});
