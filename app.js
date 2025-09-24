@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { verifyToken } = require('./helpers/jwt');
+const { TransactionController } = require('./controllers/TransactionController');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -54,10 +55,11 @@ io.on('connection', async (socket) => {
 
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
+app.use(authentication);
 app.get('/profile', authentication, UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
-app.post('/buys/:packagesId', PackageController.getPackageById);
+app.post('/buys/:packagesId', TransactionController.createTransaction);
 app.patch(
   '/profile/image',
   authentication,
