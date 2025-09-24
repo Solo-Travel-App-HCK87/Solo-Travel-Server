@@ -17,12 +17,11 @@ module.exports = (sequelize, DataTypes) => {
   Transaction.init({
     UserId: DataTypes.INTEGER,
     TravelPackageId: DataTypes.INTEGER,
-    quantity: DataTypes.INTEGER,
-    total_price: DataTypes.INTEGER,
-    booking_date: DataTypes.DATE
+    OrderId : DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Transaction',
   });
+
   return Transaction;
 };

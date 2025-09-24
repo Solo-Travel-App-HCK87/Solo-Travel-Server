@@ -18,9 +18,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
 app.get('/profile', authentication, UserController.getProfile);
+app.get('/packages', PackageController.getPackageList)
+app.get('/packages/:id', PackageController.getPackageById)
+app.post('/buys/:packagesId', PackageController.getPackageById)
 app.patch(
   '/profile/image',
   authentication,
@@ -28,11 +32,15 @@ app.patch(
   UserController.patchImageUser
 );
 
+
 app.use(errorHandling);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-app.get('/packages', PackageController.getPackageList);
-app.get('/packages/:id', PackageController.getPackageById);
+
+
+
+
+

@@ -2,26 +2,29 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Transactions', {
+    await queryInterface.createTable('RoomMessages', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      UserId: {
+      SenderId: {
         type: Sequelize.INTEGER,
         references : {
           model : 'Users',
           key : 'id'
         }
       },
-      TravelPackageId: {
+      RoomId: {
         type: Sequelize.INTEGER,
         references : {
           model : 'TravelPackages',
           key : 'id'
         }
+      },
+      message: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -34,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Transactions');
+    await queryInterface.dropTable('RoomMessages');
   }
 };
