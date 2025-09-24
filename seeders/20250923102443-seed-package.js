@@ -25,6 +25,7 @@ module.exports = {
     travel.preparation_electronics = JSON.stringify(travel.preparation_electronics);
     travel.createdAt = new Date();
     travel.updatedAt = new Date();
+    travel.highlights = JSON.stringify(travel.highlights)
     return travel;
                           });
 
