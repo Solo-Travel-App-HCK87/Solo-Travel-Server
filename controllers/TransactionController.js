@@ -11,6 +11,10 @@ class TransactionController {
             console.log("maskfjaksdfhakljsdfhajkdsfhaljksdfhkajdhsfkjashdfkjahdfjkahdfjhasdfhasdkfhadskfhakdjsfhalksdf")
             if (!isPackageExist) return next({ name: 'NotFound', message: 'Package not found' });
             if (!isPackageExist.available_slots) return next({name : 'BadRequest', message : 'Stocks book is empty'});
+            const isPackageBought = Transaction.findOne({where : {
+                TravelPackageId : isPackageExist.id
+            }})
+            if (isPackageBought) return next({name : 'BadRequest', message : 'You already buy this package please choose another Travel Package'});
             const numberOrder = await Transaction.count();
             await isPackageExist.decrement('available_slots');
             console.log(isPackageExist.id, req.user.id, numberOrder + 1);
