@@ -56,6 +56,7 @@ class UserController {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        ImageUrl: user.ImageUrl,
       });
       res.status(200).json({ access_token });
     } catch (error) {
@@ -83,7 +84,6 @@ class UserController {
 
   static async patchImageUser(req, res, next) {
     try {
-      const { id } = req.params;
 
       if (!req.file) {
         next({ name: 'isImage' });
@@ -96,7 +96,7 @@ class UserController {
         folder: 'Solo-Travel',
       });
 
-      const user = await User.findByPk(id);
+      const user = await User.findByPk(req.user.id);
       if (!user) {
         next({ name: 'Unauthorized', message: 'User not found' });
         return;
