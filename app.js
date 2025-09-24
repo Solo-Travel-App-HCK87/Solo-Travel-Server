@@ -21,12 +21,23 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const { verifyToken } = require('./helpers/jwt');
 const { TransactionController } = require('./controllers/TransactionController');
+const { use } = require('react');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  cors: {
-    origin: ['http://localhost:5173'],
-  },
+  cors: '*',
 });
+
+async function updateOnlineUsers(roomId) {
+  const sockets = await io.fetchSockets();
+  const onlineUsers = sockets
+    .map((s) => ({
+      ...s.handshake.auth,
+      id: s.id,
+    }))
+    .filter((s) => Boolean(s.access_token))
+    .filter((s) => s.roomId === roomId);
+  io.emit(`users_online:${roomId}`, onlineUsers);
+}
 
 io.on('connection', async (socket) => {
   const access_token = socket.handshake.auth.access_token;
@@ -37,6 +48,7 @@ io.on('connection', async (socket) => {
   const payload = verifyToken(access_token);
   const user = await User.findByPk(payload.id);
   const roomId = socket.handshake.auth.roomId;
+  socket.handshake.auth.userId = user.id;
   const prev = await RoomMessage.findAll({
     where: { RoomId: roomId },
     include: { model: User },
@@ -44,6 +56,8 @@ io.on('connection', async (socket) => {
   });
 
   io.emit(`travel:${roomId}`, prev);
+
+  updateOnlineUsers(roomId);
 
   socket.on('chat_message', async (msg) => {
     console.log(msg);
@@ -62,12 +76,14 @@ io.on('connection', async (socket) => {
 
     io.emit(`travel:${roomId}`, data);
   });
+
+  socket.on('disconnect', () => updateOnlineUsers(roomId));
 });
 
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
 app.use(authentication);
-app.get('/my-packages', PackageController.getMyPackages)
+app.get('/my-packages', PackageController.getMyPackages);
 app.get('/profile', UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
