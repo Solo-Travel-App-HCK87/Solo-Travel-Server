@@ -28,6 +28,18 @@ const io = new Server(httpServer, {
   },
 });
 
+async function updateOnlineUsers(roomId) {
+  const sockets = await io.fetchSockets();
+  const onlineUsers = sockets
+    .map((s) => ({
+      ...s.handshake.auth,
+      id: s.id,
+    }))
+    .filter((s) => Boolean(s.access_token))
+    .filter((s) => s.roomId === roomId);
+  io.emit(`users_online:${roomId}`, onlineUsers);
+}
+
 io.on('connection', async (socket) => {
   const access_token = socket.handshake.auth.access_token;
   if (!access_token) {
@@ -44,6 +56,8 @@ io.on('connection', async (socket) => {
   });
 
   io.emit(`travel:${roomId}`, prev);
+
+  updateOnlineUsers(roomId);
 
   socket.on('chat_message', async (msg) => {
     console.log(msg);
@@ -62,6 +76,8 @@ io.on('connection', async (socket) => {
 
     io.emit(`travel:${roomId}`, data);
   });
+
+  socket.on('disconnect', () => updateOnlineUsers(roomId));
 });
 
 app.post('/register', UserController.register);
