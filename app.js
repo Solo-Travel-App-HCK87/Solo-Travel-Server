@@ -9,7 +9,7 @@ const UserController = require('./controllers/UserController');
 const PackageController = require('./controllers/PackageController');
 const { errorHandling } = require('./middlewares/errorHandling');
 const app = express()
-const port = 3000
+const port = 3001
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
@@ -21,6 +21,8 @@ app.post('/register', UserController.register)
 app.post('/login', UserController.login)
 app.get('/users/:id', UserController.getUserById)
 app.patch('/users/:id/image', upload.single('ImageUrl'), UserController.patchImageUser)
+app.get('/packages', PackageController.getPackageList)
+app.get('/packages/:id', PackageController.getPackageById)
 
 app.use(errorHandling)
 
@@ -29,5 +31,7 @@ app.listen(port, () => {
 });
 
 
-app.get('/packages', PackageController.getPackageList)
-app.get('/packages/:id', PackageController.getPackageById)
+
+
+
+

@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     preparation_docs: DataTypes.JSON,
     preparation_clothing: DataTypes.JSON,
     preparation_essentials: DataTypes.JSON,
-    preparation_electronics: DataTypes.JSON
+    preparation_electronics: DataTypes.JSON,
+    highlights: DataTypes.JSON
   }, {
     sequelize,
     modelName: 'TravelPackage',
