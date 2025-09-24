@@ -67,21 +67,17 @@ io.on('connection', async (socket) => {
 app.post('/register', UserController.register);
 app.post('/login', UserController.login);
 app.use(authentication);
-app.get('/profile', authentication, UserController.getProfile);
+app.get('/profile',  UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
 app.post('/buys/:packagesId', TransactionController.createTransaction);
 app.patch(
   '/profile/image',
-  authentication,
   upload.single('ImageUrl'),
   UserController.patchImageUser
 );
 
 app.use(errorHandling);
-
-app.get('/packages', PackageController.getPackageList);
-app.get('/packages/:id', PackageController.getPackageById);
 
 httpServer.listen(port, () => {
   console.log(`Server running at: http://localhost:${port}`);
