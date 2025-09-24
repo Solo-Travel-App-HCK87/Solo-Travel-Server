@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { verifyToken } = require('../helpers/jwt')
+const { verifyToken } = require('../helpers/jwt');
 
 const authentication = async (req,_res,next) => {
 
@@ -23,7 +23,4 @@ const authentication = async (req,_res,next) => {
 
 }
 
-
-module.exports = { authentication }
-
-
+module.exports = { authentication };
