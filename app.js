@@ -87,11 +87,7 @@ app.get('/profile', UserController.getProfile);
 app.get('/packages', PackageController.getPackageList);
 app.get('/packages/:id', PackageController.getPackageById);
 app.post('/buys/:packagesId', TransactionController.createTransaction);
-app.patch(
-  '/profile/image',
-  upload.single('ImageUrl'),
-  UserController.patchImageUser
-);
+app.patch('/profile/image', upload.single('ImageUrl'), UserController.patchImageUser);
 
 app.use(errorHandling);
 
