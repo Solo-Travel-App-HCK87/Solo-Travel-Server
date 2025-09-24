@@ -9,7 +9,7 @@ const UserController = require('./controllers/UserController');
 const PackageController = require('./controllers/PackageController');
 const { errorHandling } = require('./middlewares/errorHandling');
 const app = express()
-const port = 3001
+const port = 3003
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
