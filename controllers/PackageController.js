@@ -4,7 +4,6 @@ class PackageController {
     
     static async getPackageById(req, res, next) {
         try {
-            console.log('running')
             const { id } = req.params;
             const isPackageExist = await TravelPackage.findByPk(+id);
             if (!isPackageExist) return next({ name: 'NotFound', message: 'Package not found' });
