@@ -67,9 +67,11 @@ class UserController {
   static async getProfile(req, res, next) {
     try {
       const user = req.user;
+
       res.status(200).json({
         id: user.id,
         firstName: user.firstName,
+        ImageUrl: user.ImageUrl,
         lastName: user.lastName,
         email: user.email,
       });
