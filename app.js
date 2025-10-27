@@ -40,11 +40,13 @@ async function updateOnlineUsers(roomId) {
 
 io.on('connection', async (socket) => {
   const access_token = socket.handshake.auth.access_token;
+  console.log(access_token, '<<< access token');
   if (!access_token) {
     console.log('No access token provided');
     return;
   }
   const payload = verifyToken(access_token);
+  console.log(payload, '<<< payload');
   const user = await User.findByPk(payload.id);
   const roomId = socket.handshake.auth.roomId;
   socket.handshake.auth.userId = user.id;
